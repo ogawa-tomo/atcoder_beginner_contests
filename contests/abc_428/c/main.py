@@ -1,9 +1,7 @@
-from collections import deque
-
-S: deque[str] = deque()
+S: list[str] = []
 
 # needed_right_num:[n]: n番目の文字まであるとき、カッコ閉じがいくつ必要か
-needed_right_nums: deque[int | None] = deque()
+needed_right_nums: list[int | None] = []
 
 Q = int(input())
 for _ in range(Q):
