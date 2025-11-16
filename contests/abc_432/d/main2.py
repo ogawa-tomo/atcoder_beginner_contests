@@ -22,7 +22,8 @@ class Block:
         self.min_x += x
         self.max_x += x
 
-    def grid_num(self):
+    @property
+    def size(self):
         return (self.max_x - self.min_x + 1) * (self.max_y - self.min_y + 1)
 
 
@@ -93,7 +94,7 @@ for start_block in blocks:
     renketsu_num = 0
     while d:
         block = d.popleft()
-        renketsu_num += block.grid_num()
+        renketsu_num += block.size
         for neighbor in block.neighbors:
             if not neighbor.investigated:
                 neighbor.investigated = True
