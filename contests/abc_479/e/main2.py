@@ -18,6 +18,7 @@ class Link:
         self.right = right
 
 
+# 部分木のサイズを調べる
 # parentとsubtree_sizeの調査
 def dfs(node: Node):
     subtree_size = 1
