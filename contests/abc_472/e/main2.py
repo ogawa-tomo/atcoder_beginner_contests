@@ -1,4 +1,3 @@
-from typing import Union
 import sys
 
 sys.setrecursionlimit(10**9)
@@ -7,7 +6,7 @@ sys.setrecursionlimit(10**9)
 class Node:
     def __init__(self, i: int) -> None:
         self.i = i
-        self.parent: Union[None, Node] = None
+        self.parent: Node | None = None
         self.size = 1
         self.visited = False
         self.is_black = False
@@ -55,6 +54,35 @@ def dfs(node: Node, is_black: bool):
             dfs(to_node, not is_black)
 
 
+class GetPath:
+    def __init__(self, nodes: list[Node], start: Node, goal: Node) -> None:
+        self.nodes = nodes
+        self.start = start
+        self.goal = goal
+        self.path: list[Node] = []
+
+    def dfs(self, node: Node):
+        node.visited = True
+        if node == self.goal:
+            self.path.append(node)
+            return True
+        for to_node in node.st_to_nodes:
+            if not to_node.visited and self.dfs(to_node):
+                self.path.append(node)
+                return True
+        return False
+
+    def get_path(self):
+        if self.dfs(self.start):
+            self.path.reverse()
+            return self.path
+
+
+def get_path(nodes: list[Node], start: Node, goal: Node):
+    gp = GetPath(nodes, start, goal)
+    return gp.get_path()
+
+
 T = int(input())
 
 for _ in range(T):
@@ -99,24 +127,10 @@ for _ in range(T):
         # 全域木に含まれないリンクの両端ノードの色が同じ<=>2部グラフではない<=>奇閉路が存在する
         ok = True
 
-        path: list[Node] = []
-        goal = to_node
+        path = get_path(nodes, from_node, to_node)
+        if path is None:
+            raise
 
-        # pathを求める
-        def dfs2(node: Node):
-            if node == goal:
-                path.append(node)
-                return True
-            node.visited = True
-            for to_node in node.st_to_nodes:
-                if not to_node.visited:
-                    if dfs2(to_node):
-                        path.append(node)
-                        return True
-            return False
-
-        dfs2(from_node)
-        # pathは絶対に存在する
         print(len(path))
         print(*path)
         break
