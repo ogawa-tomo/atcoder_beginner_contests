@@ -74,13 +74,13 @@ class SegmentTree:
             cell.min_value = min(lower_left_cell.min_value, lower_right_cell.min_value)
             cell.sum_value = lower_left_cell.sum_value + lower_right_cell.sum_value
 
-    def max_value(self, start_index: int, end_index: int):
+    def range_max(self, start_index: int, end_index: int):
         return self.query(start_index, end_index, self.cells[0], "max")
 
-    def min_value(self, start_index: int, end_index: int):
+    def range_min(self, start_index: int, end_index: int):
         return self.query(start_index, end_index, self.cells[0], "min")
 
-    def sum_value(self, start_index: int, end_index: int):
+    def range_sum(self, start_index: int, end_index: int):
         return self.query(start_index, end_index, self.cells[0], "sum")
 
     def query(self, start_index: int, end_index: int, cell: Cell, func: str) -> int:
@@ -154,15 +154,15 @@ for a in A:
 
 tree = SegmentTree(X)
 
-min_x = tree.min_value(0, N)
-max_x = tree.max_value(0, N)
+min_x = tree.range_min(0, N)
+max_x = tree.range_max(0, N)
 answer = max_x - min_x + 1
 
 for i in range(N):
     a = A[i]
     # この動きの前の最小値（最大値）と、この動きを反転したときのこの動きの後の最小値（最大値）のうち、小さい（大きい）ほう
-    min_x = min(tree.min_value(0, i), tree.min_value(i + 1, N) - 2 * a)
-    max_x = max(tree.max_value(0, i), tree.max_value(i + 1, N) - 2 * a)
+    min_x = min(tree.range_min(0, i), tree.range_min(i + 1, N) - 2 * a)
+    max_x = max(tree.range_max(0, i), tree.range_max(i + 1, N) - 2 * a)
 
     answer = max(answer, max_x - min_x + 1)
 
